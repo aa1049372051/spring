@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunix.dao.IUserDao">
+	<resultMap id="userResultMap" type="User">
+		<id property="id" column="user_id" />
+		<result property="name" column="user_name" />
+	</resultMap>
+	<select id="selectUsers" resultMap="userResultMap"
+		parameterType="int">
+		select id user_id, name user_name
+		from user
+		where id =
+		#{id}
+	</select>
+	<select id='getUsers' resultType="User">
+		select * from user
+		<where>
+			<if test='status !=null and status != -1'>
+				status=#{status}
+			</if>
+			<if test='name !=null'>
+				and name like '%${name}%'
+			</if>
+			<if test='website !=null and website !=""'>
+				and website = #{website}
+			</if>
+		</where>
+	</select>
+	<select id="getUser" parameterType="int" resultType="User">
+		select *
+		from user where id = #{id}
+	</select>
+	<select id="getUserList" resultType="User">
+		select * from user;
+	</select>
+	<insert id="insertUser" parameterType="User">
+		insert into user
+		values(#{id},#{name},#{dept},#{website},#{phone})
+	</insert>
+	<update id="updateUser" parameterType="User">
+		update user set
+		name=#{name},dept=#{dept},phone=#{phone},website=#{website}
+		where id =
+		#{id}
+	</update>
+	<delete id="deleteUser" parameterType="int">
+		delete from user where id
+		= #{id}
+	</delete>
+	<select id="findByPk" resultType="map">
+		select id, name
+		from user
+		where id = #{id}
+	</select>
+</mapper>
